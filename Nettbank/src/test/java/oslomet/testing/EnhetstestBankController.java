@@ -36,6 +36,7 @@ public class EnhetstestBankController {
     // denne skal Mock'es
     private Sikkerhet sjekk;
 
+    // initDB
     @Test
     public void test_initDB(){
         when(repository.initDB(any())).thenReturn("OK");
@@ -43,6 +44,7 @@ public class EnhetstestBankController {
         assertEquals("OK", resultat);
     }
 
+    //hentAlleKonti
     @Test
     public void hentKundeInfo_loggetInn() {
 

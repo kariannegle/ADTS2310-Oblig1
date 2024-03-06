@@ -144,8 +144,77 @@ public class EnhetstestBankController {
 
         // assert
         assertNull(resultat);
-
     }
+
+    @Test
+    public void hentTransaksjoner_OK(){
+        //arrage
+        List<Transaksjon> transaksjoner= new ArrayList<>();
+
+        Transaksjon tr1 = new Transaksjon(1,"01010110523666",120.0,"29022024","Betaling","Avventer","01010110523");
+        Transaksjon tr2 = new Transaksjon(2,"01010110523666",120.0,"29022024","Betaling","Avventer","010101105");
+
+        transaksjoner.add(tr1);
+        transaksjoner.add(tr2);
+
+        List <Konto> konti = new ArrayList<>();
+        Konto konto1 = new Konto("105010123456", "01010110523",
+                720, "Lønnskonto", "NOK", transaksjoner);
+        konti.add(konto1);
+        konto1.setTransaksjoner(transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn("105010123456");
+
+        when(repository.hentTransaksjoner(anyString(), anyString(), anyString())).thenReturn(konto1);
+
+        //act
+        Konto resultat = bankController.hentTransaksjoner("01010110523", "29022024", "29022024");
+
+        //assert
+        assertEquals(konto1, resultat);
+    }
+
+    @Test
+    public void hentTransaksjoner_ikkeOK(){
+        Konto konto1 = new Konto("105010123456", "01010110523",
+                720, "Lønnskonto", "NOK", null);
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        //act
+        Konto resultat = bankController.hentTransaksjoner(null, null, null);
+        assertNull(resultat);
+    }
+
+    @Test
+    public void hentBetaling_OK(){
+        //arrage
+        List<Transaksjon> transaksjoner= new ArrayList<>();
+        Transaksjon transaksjon = new Transaksjon(1,"01010110523666",120.0,"29022024","Betaling","Avventer","01010110523");
+        transaksjoner.add(transaksjon);
+
+        when(sjekk.loggetInn()).thenReturn("105010123456");
+        when(repository.hentBetaling(konto1.getPersonnummer())).thenReturn(transaksjoner);
+
+        //act
+        List<Transaksjon> resultat = bankController.hentBetaling();
+
+        //assert
+        assertEquals(transaksjoner, resultat);
+    }
+
+    @Test
+    public void hentBetaling_ikkeOK(){
+        //arrage
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        //act
+        List<Transaksjon> resultat = bankController.hentBetaling();
+
+        //assert
+        assertNull(resultat);
+    }
+
 
     @Test
     public void registrerBetaling_LoggetInn(){

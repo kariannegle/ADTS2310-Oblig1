@@ -21,12 +21,15 @@ import static org.mockito.Mockito.when;
 public class EnhetstestAdminKontoController {
 
     @InjectMocks
+    // denne skal testes
     private AdminKontoController kontoController;
 
     @Mock
+    // denne skal mock'es
     private AdminRepository repository;
 
     @Mock
+    // denne skal mock'es
     private Sikkerhet sjekk;
 
     @Test

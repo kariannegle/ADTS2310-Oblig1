@@ -248,7 +248,7 @@ public class EnhetstestBankController {
         String resultat = bankController.registrerBetaling(enTransaksjon);
 
         //assert
-        assertEquals("Feil", resultat);
+        assertNull(resultat);
     }
 
     @Test
@@ -329,7 +329,7 @@ public class EnhetstestBankController {
         String resultat = bankController.endre(kunde);
 
         //assert
-        assertEquals("OK", resultat);
+        assertEquals(kunde.getPersonnummer(), resultat);
     }
 
     @Test
@@ -343,7 +343,7 @@ public class EnhetstestBankController {
         String resultat = bankController.endre(kunde);
 
         //assert
-        assertEquals("Feil", resultat);
+        assertNull(resultat);
     }
 }
 

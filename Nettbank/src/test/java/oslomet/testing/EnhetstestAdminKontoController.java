@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -54,6 +56,117 @@ public class EnhetstestAdminKontoController {
 
         // Assert
         assertEquals(kontoliste, resultat);
+    }
+
+    @Test
+    public void test_hentAlleKontiFeil(){
+        //arrange
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        //act
+        List<Konto> resultat = kontoController.hentAlleKonti();
+
+        //assert
+        assertNull(resultat);
+    }
+
+    @Test
+    public void test_resgistrerKontoOK(){
+        //arrange
+        List<Transaksjon> konto1transaksjoner = new ArrayList<>();
+        Konto konto1 = new Konto("05068924604", "41925811793",
+                13495.41, "Brukskonto", "NOK", konto1transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn(konto1.getPersonnummer());
+        when(repository.registrerKonto(any(Konto.class))).thenReturn("OK");
+
+        //act
+        String resultat = kontoController.registrerKonto(konto1);
+
+        //assert
+        assertEquals("OK", resultat);
+    }
+
+    @Test
+    public void test_resgistrerKontoFeil(){
+        //arrange
+        List<Transaksjon> konto1transaksjoner = new ArrayList<>();
+        Konto konto1 = new Konto ("05068924604", "41925811793",
+                13495.41, "Brukskonto", "NOK", konto1transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        //act
+        String resultat = kontoController.registrerKonto(konto1);
+
+        //assert
+        assertEquals("Ikke innlogget", resultat);
+    }
+
+    @Test
+    public void test_endreKontoOK(){
+        //arrange
+        List<Transaksjon> konto1transaksjoner = new ArrayList<>();
+        Konto konto1 = new Konto("05068924604", "41925811793",
+                13495.41, "Brukskonto", "NOK", konto1transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn(konto1.getPersonnummer());
+        when(repository.endreKonto(any(Konto.class))).thenReturn("OK");
+
+        //act
+        String resultat = kontoController.endreKonto(konto1);
+
+        //assert
+        assertEquals("OK", resultat);
+    }
+
+    @Test
+    public void test_endreKontoFeil(){
+        //arrange
+        List<Transaksjon> konto1transaksjoner = new ArrayList<>();
+        Konto konto1 = new Konto("05068924604", "41925811793",
+                13495.41, "Brukskonto", "NOK", konto1transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        //act
+        String resultat = kontoController.endreKonto(konto1);
+
+        //assert
+        assertEquals("Ikke innlogget", resultat);
+    }
+
+    @Test
+    public void test_slettKontoOK(){
+        //arrange
+        List<Transaksjon> konto1transaksjoner = new ArrayList<>();
+        Konto konto1 = new Konto("05068924604", "41925811793",
+                13495.41, "Brukskonto", "NOK", konto1transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn(konto1.getPersonnummer());
+        when(repository.slettKonto("05068924604")).thenReturn("OK");
+
+        //act
+        String resultat = kontoController.slettKonto(konto1.getPersonnummer());
+
+        //assert
+        assertEquals("OK", resultat);
+    }
+
+    @Test
+    public void test_slettKontoFeil(){
+        //arrange
+        List<Transaksjon> konto1transaksjoner = new ArrayList<>();
+        Konto konto1 = new Konto("05068924604", "41925811793",
+                13495.41, "Brukskonto", "NOK", konto1transaksjoner);
+
+        when(sjekk.loggetInn()).thenReturn(null);
+
+        //act
+        String resultat = kontoController.slettKonto(konto1.getPersonnummer());
+
+        //assert
+        assertEquals("Ikke innlogget", resultat);
     }
 
 }

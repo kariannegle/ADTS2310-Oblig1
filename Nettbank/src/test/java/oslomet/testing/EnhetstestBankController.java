@@ -193,11 +193,14 @@ public class EnhetstestBankController {
         Transaksjon transaksjon = new Transaksjon(1,"01010110523666",120.0,"29022024","Betaling","Avventer","01010110523");
         transaksjoner.add(transaksjon);
 
+        Konto konto1 = new Konto("105010123456", "01010110523",
+                720, "Lønnskonto", "NOK", transaksjoner);
+
         when(sjekk.loggetInn()).thenReturn("105010123456");
-        when(repository.hentBetaling(konto1.getPersonnummer())).thenReturn(transaksjoner);
+        when(repository.hentBetalinger(konto1.getPersonnummer())).thenReturn(transaksjoner);
 
         //act
-        List<Transaksjon> resultat = bankController.hentBetaling();
+        List<Transaksjon> resultat = bankController.hentBetalinger();
 
         //assert
         assertEquals(transaksjoner, resultat);
@@ -209,7 +212,7 @@ public class EnhetstestBankController {
         when(sjekk.loggetInn()).thenReturn(null);
 
         //act
-        List<Transaksjon> resultat = bankController.hentBetaling();
+        List<Transaksjon> resultat = bankController.hentBetalinger();
 
         //assert
         assertNull(resultat);

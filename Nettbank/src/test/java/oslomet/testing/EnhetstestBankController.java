@@ -47,7 +47,6 @@ public class EnhetstestBankController {
     //hentAlleKonti
     @Test
     public void hentKundeInfo_loggetInn() {
-
         // arrange
         Kunde enKunde = new Kunde("01010110523",
                 "Lene", "Jensen", "Askerveien 22", "3270",
@@ -66,7 +65,6 @@ public class EnhetstestBankController {
 
     @Test
     public void hentKundeInfo_IkkeloggetInn() {
-
         // arrange
         when(sjekk.loggetInn()).thenReturn(null);
 
@@ -102,7 +100,6 @@ public class EnhetstestBankController {
     @Test
     public void hentKonti_IkkeLoggetInn()  {
         // arrange
-
         when(sjekk.loggetInn()).thenReturn(null);
 
         // act
@@ -114,7 +111,6 @@ public class EnhetstestBankController {
 
     @Test
     public void hentSaldi_LoggetInn(){
-
         List<Konto> konti = new ArrayList<>();
         Konto konto1 = new Konto("105010123456", "01010110523",
                 720, "Lønnskonto", "NOK", null);
@@ -136,7 +132,6 @@ public class EnhetstestBankController {
 
     @Test
     public void hentSaldi_ikkeLoggetInn(){
-
         when(sjekk.loggetInn()).thenReturn(null);
 
         // act

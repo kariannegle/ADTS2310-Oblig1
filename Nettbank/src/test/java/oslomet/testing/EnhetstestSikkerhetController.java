@@ -14,6 +14,7 @@ import oslomet.testing.Sikkerhet.Sikkerhet;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static net.bytebuddy.matcher.ElementMatchers.any;
 import static org.junit.Assert.assertEquals;
@@ -21,9 +22,9 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.when;
-/*
+
 @RunWith(MockitoJUnitRunner.class)
-public class EnhetstestSikkerhet {
+public class EnhetstestSikkerhetController {
     @InjectMocks
     private Sikkerhet sikkerhetsController;
 
@@ -32,32 +33,36 @@ public class EnhetstestSikkerhet {
 
     @Mock
     private MockHttpSession session;
-/*
-    @Test
-    public void test_sjekkLoggInnOK() {
-        // Arrange
-        Kunde kunde = new Kunde("01010110523", "Per", "Hansen", "Osloveien 82", "1234", "Oslo", "12345678", "HeiHei");
-        when(bankrep.sjekkLoggInn(kunde.getPersonnummer(), kunde.getPassord())).thenReturn("OK");
 
-        //Act
+    @Test
+    public void test_sjekkLoggInn(){
+        //arrange
+        Kunde kunde = new Kunde ("01010110523", "Lene", "Jensen", "Askerveien 22", "3270", "Oslo", "22224444", "HeiHei");
+        when(bankrep.sjekkLoggInn(kunde.getPersonnummer(), kunde.getPassord())).thenReturn("OK");
+    }
+
+    @Test
+    public void testskjekkLoggInnFeil(){
+        //arrange
+        Kunde kunde = new Kunde ("01010110523", "Lene", "Jensen", "Askerveien 22", "3270", "Oslo", "22224444", "HeiHei");
+        when(bankrep.sjekkLoggInn(kunde.getPersonnummer(), kunde.getPassord())).thenReturn("Feil");
+
+        //act
         String resultat = sikkerhetsController.sjekkLoggInn("01010110523", "HeiHei");
 
         //assert
-        assertEquals("OK", resultat);
+        assertEquals("Feil i personnummer eller passord", resultat);
     }
 
-    //@Test
-    /*public void test_loggetInn(){
+    @Test
+    public void test_loggetInn(){
         //arrange
         Map<String,Object> attributes = new HashMap<String,Object>();
-
         doAnswer(new Answer<Object>(){
             @Override
             public Object answer(InvocationOnMock invocation) throws Throwable {
                 String key = (String) invocation.getArguments()[0];
-                Object value = invocation.getArguments()[1];
-                attributes.put(key, value);
-                return null;
+                return attributes.get(key);
             }
         }).when(session).getAttribute(anyString());
 
@@ -69,7 +74,7 @@ public class EnhetstestSikkerhet {
                 attributes.put(key, value);
                 return null;
             }
-        }).when(session).setAttribute(anyString(), any());
+        }).when(session).setAttribute(anyString(), anyString());
 
         session.setAttribute("Innlogget", "01010110523");
 
@@ -80,9 +85,7 @@ public class EnhetstestSikkerhet {
         assertEquals("01010110523", resultat);
     }
 
-     */
-
-   /* @Test
+    @Test
     public void test_loggetInnFeil(){
         //arrange
         session.setAttribute("Innlogget", null);
@@ -94,12 +97,10 @@ public class EnhetstestSikkerhet {
         assertNull(resultat);
     }
 
-    */
-/*
     @Test
     public void test_loggUt(){
         //arrange
-        session.setAttribute("Innlogget", "01010110523");
+        session.setAttribute("Innlogget", "12345678901");
 
         //act
         sikkerhetsController.loggUt();
@@ -110,9 +111,9 @@ public class EnhetstestSikkerhet {
     }
 
     @Test
-    public void test_loggInnAdmin(){
+    public void test_logInnAdmin(){
         //arrange
-        when(bankrep.sjekkLoggInn("Admin", "Admin")).thenReturn("OK");
+        session.setAttribute("Innlogget", "Admin");
 
         //act
         String resultat = sikkerhetsController.loggInnAdmin("Admin", "Admin");
@@ -132,6 +133,6 @@ public class EnhetstestSikkerhet {
         //assert
         assertEquals("Ikke logget inn", resultat);
     }
-}
 
- */
+
+}

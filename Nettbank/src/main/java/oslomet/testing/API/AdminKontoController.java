@@ -18,6 +18,11 @@ public class AdminKontoController {
     @Autowired
     private Sikkerhet sjekk;
 
+    @GetMapping("/initDB")
+    public String initDB(){
+        return repository.initDB(dataSource);
+    }
+
     @GetMapping("/hentAlle")
     public List<Konto> hentAlleKonti() {
         String personnummer = sjekk.loggetInn();
@@ -59,8 +64,5 @@ public class AdminKontoController {
     @Autowired
     private DataSource dataSource;
 
-    @GetMapping("/initDB")
-    public String initDB(){
-        return repository.initDB(dataSource);
-    }
+
 }
